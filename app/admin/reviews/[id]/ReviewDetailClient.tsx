@@ -9,10 +9,13 @@ export function ReviewDetailClient({ review, updateReviewStatus, convertReviewTo
   convertReviewToUseCase: (formData: FormData) => Promise<void>;
 }) {
   const [isPending, startTransition] = useTransition();
+  const [done, setDone] = useState(review.status === "converted_to_use_case");
 
   function handleConvert() {
+    if (done || isPending) return;
     const formData = new FormData();
     formData.append("id", review.id);
+    setDone(true);
     startTransition(() => convertReviewToUseCase(formData));
   }
 
@@ -27,9 +30,13 @@ export function ReviewDetailClient({ review, updateReviewStatus, convertReviewTo
         <Button type="submit">ステータスを保存</Button>
       </form>
       <div className="mt-3">
-        <Button variant="secondary" disabled={isPending} onClick={handleConvert}>
-          {isPending ? "変換中..." : "使用例に変換"}
-        </Button>
+        {done ? (
+          <p className="text-sm text-green-600 font-semibold">✅ 使用例に変換済み</p>
+        ) : (
+          <Button variant="secondary" disabled={isPending} onClick={handleConvert}>
+            {isPending ? "変換中..." : "使用例に変換"}
+          </Button>
+        )}
       </div>
     </Card>
   );
