@@ -86,4 +86,5 @@ export async function convertReviewToUseCase(formData: FormData) {
   await supabase.from("ai_reviews").update({ status: "converted_to_use_case" }).eq("project_key", PROJECT_KEY).eq("id", id);
   revalidatePath("/admin/reviews");
   revalidatePath("/admin/use-cases");
+  redirect("/admin/reviews");
 }
