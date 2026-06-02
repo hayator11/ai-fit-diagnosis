@@ -32,10 +32,12 @@ export async function submitReview(formData: FormData) {
   }
 
   const supabase = getSupabaseAdmin();
-  if (supabase) {
-    const { error } = await supabase.from("ai_reviews").insert(payload);
-    if (error) redirect(`/review?error=${encodeURIComponent("保存に失敗しました")}`);
+  if (!supabase) {
+    redirect(`/review?error=${encodeURIComponent("保存先DBが未設定です。Supabase接続後に投稿を保存できます。")}`);
   }
+
+  const { error } = await supabase.from("ai_reviews").insert(payload);
+  if (error) redirect(`/review?error=${encodeURIComponent("保存に失敗しました")}`);
 
   revalidatePath("/admin/reviews");
   redirect("/review?submitted=1");
