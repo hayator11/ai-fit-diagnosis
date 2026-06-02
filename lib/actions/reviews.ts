@@ -61,6 +61,8 @@ export async function convertReviewToUseCase(formData: FormData) {
   const supabase = getSupabaseAdmin();
   if (!supabase || !id) return;
 
+  const existing = await supabase.from("ai_use_cases").select("id").eq("source_review_id", id).single();
+  if (existing.data) { redirect("/admin/reviews"); return; }
   const { data: review } = await supabase.from("ai_reviews").select("*").eq("project_key", PROJECT_KEY).eq("id", id).single();
   if (!review) return;
 
