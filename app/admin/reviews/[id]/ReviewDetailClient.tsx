@@ -1,5 +1,6 @@
 "use client";
-import { useState, useTransition } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 
@@ -8,15 +9,19 @@ export function ReviewDetailClient({ review, updateReviewStatus, convertReviewTo
   updateReviewStatus: (formData: FormData) => Promise<void>;
   convertReviewToUseCase: (formData: FormData) => Promise<void>;
 }) {
-  const [isPending, startTransition] = useTransition();
-  const [done, setDone] = useState(review.status === "converted_to_use_case");
+  const [status, setStatus] = useState<"idle"|"loading"|"done">(
+    review.status === "converted_to_use_case" ? "done" : "idle"
+  );
+  const router = useRouter();
 
-  function handleConvert() {
-    if (done || isPending) return;
+  async function handleConvert() {
+    if (status !== "idle") return;
+    setStatus("loading");
     const formData = new FormData();
     formData.append("id", review.id);
-    setDone(true);
-    startTransition(() => convertReviewToUseCase(formData));
+    await convertReviewToUseCase(formData);
+    setStatus("done");
+    router.push("/admin/use-cases");
   }
 
   return (
@@ -30,11 +35,11 @@ export function ReviewDetailClient({ review, updateReviewStatus, convertReviewTo
         <Button type="submit">ステータスを保存</Button>
       </form>
       <div className="mt-3">
-        {done ? (
+        {status === "done" ? (
           <p className="text-sm text-green-600 font-semibold">✅ 使用例に変換済み</p>
         ) : (
-          <Button variant="secondary" disabled={isPending} onClick={handleConvert}>
-            {isPending ? "変換中..." : "使用例に変換"}
+          <Button variant="secondary" disabled={status === "loading"} onClick={handleConvert}>
+            {status === "loading" ? "変換中..." : "使用例に変換"}
           </Button>
         )}
       </div>
