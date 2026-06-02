@@ -4,6 +4,7 @@ import { ToolCard } from "@/components/tools/ToolCard";
 import { UseCaseCard } from "@/components/use-cases/UseCaseCard";
 import { getPublishedTools, getPublishedUpdates, getPublishedUseCases } from "@/lib/data/queries";
 import { PROJECT_NAME, PROJECT_TAGLINE } from "@/lib/project";
+import { experienceLevels } from "@/src/data/ai-tamatebako/experienceLevels";
 
 export default async function HomePage() {
   const [useCases, tools, updates] = await Promise.all([getPublishedUseCases(), getPublishedTools(), getPublishedUpdates()]);
@@ -13,11 +14,11 @@ export default async function HomePage() {
       <section className="bg-white">
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
           <p className="text-sm font-semibold text-brand">{PROJECT_NAME}</p>
-          <h1 className="mt-4 max-w-4xl text-4xl font-bold tracking-tight md:text-6xl">
-            AIで何ができるか、まだわからなくても大丈夫。
+          <h1 className="mt-4 max-w-5xl text-4xl font-bold tracking-tight md:text-6xl">
+            <span className="block">{PROJECT_TAGLINE}</span>
           </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-8 text-muted">
-            ChatGPT、Claude、Gemini、NotebookLM、Genspark、Claude Code、Codex、音楽生成AI。
+          <p className="mt-6 max-w-4xl text-lg leading-8 text-muted">
+            ChatGPT、Claude、Gemini、NotebookLM、Genspark、Claude Code、Codex、音楽生成AI、動画生成AI。
             まずは「何に困っているか」「何を少し楽にしたいか」から、使えそうなAIと順番を一緒に見つけます。
             慣れてきた人には、設計、資料整理、実装を分ける使い方まで案内します。
           </p>
@@ -27,6 +28,22 @@ export default async function HomePage() {
             <ButtonLink href="/classic-home" variant="ghost">初期トップ案を見る</ButtonLink>
           </div>
         </div>
+      </section>
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <h2 className="text-2xl font-bold">3つの玉手箱から始める</h2>
+        <p className="mt-3 max-w-3xl text-muted">
+          何を聞けばいいかわからない人も、少し使っている人も、もっと深く使いたい人も、まずは今の自分に近い入口を選べます。
+        </p>
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          {experienceLevels.map((level) => (
+            <Card key={level.id} className={level.id === "advanced" ? "border-amber-200 bg-slate-950 text-white" : level.id === "intermediate" ? "border-indigo-200 bg-indigo-950 text-white" : "border-amber-100 bg-amber-50/60"}>
+              <p className={level.id === "beginner" ? "text-sm font-semibold text-brand" : "text-sm font-semibold text-amber-200"}>{level.boxName}</p>
+              <h3 className="mt-3 text-xl font-bold">{level.title}</h3>
+              <p className={level.id === "beginner" ? "mt-3 text-sm leading-7 text-muted" : "mt-3 text-sm leading-7 text-slate-200"}>{level.description}</p>
+            </Card>
+          ))}
+        </div>
+        <div className="mt-6"><ButtonLink href="/diagnosis">玉手箱を選んで診断する</ButtonLink></div>
       </section>
       <section className="mx-auto max-w-6xl px-4 py-12">
         <h2 className="text-2xl font-bold">まず、AIでできること</h2>

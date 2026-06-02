@@ -6,7 +6,8 @@ const items = [
   ["使用例", "/admin/use-cases"],
   ["AIツール", "/admin/tools"],
   ["更新情報", "/admin/updates"],
-  ["診断ロジック", "/admin/diagnosis"]
+  ["診断ロジック", "/admin/diagnosis"],
+  ["玉手箱", "/admin/tamatebako"]
 ];
 
 export function AdminNav() {

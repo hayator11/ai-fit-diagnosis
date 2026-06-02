@@ -1,11 +1,13 @@
 import { AdminNav } from "@/components/admin/AdminNav";
 import { Card } from "@/components/ui/Card";
 import { getAdminUpdates, getAdminUseCases, getPublishedTools, getReviews } from "@/lib/data/queries";
+import { getMockSummary } from "@/src/data/ai-tamatebako/mockSummary";
 
 export default async function AdminPage() {
   const [reviews, useCases, tools, updates] = await Promise.all([getReviews(), getAdminUseCases(), getPublishedTools(), getAdminUpdates()]);
+  const tamatebakoSummary = getMockSummary();
   const stats = [
-    ["新しい診断数", "DBで確認"],
+    ["新しい診断数", tamatebakoSummary.total],
     ["新しい使用感投稿数", reviews.length],
     ["承認待ちレビュー数", reviews.filter((item) => item.status === "pending").length],
     ["公開済み使用例数", useCases.filter((item) => item.publish_status === "published").length],
