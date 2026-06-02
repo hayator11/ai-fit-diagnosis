@@ -26,8 +26,8 @@ export default async function AdminReviewsPage() {
             <p className="mt-3 text-sm text-muted">{review.actual_use_case}</p>
             <div className="mt-4 flex flex-wrap gap-2">
               <Link href={`/admin/reviews/${review.id}`} className="rounded-lg border border-line px-3 py-2 text-sm">詳細</Link>
-              <form action={convertReviewToUseCase}><input type="hidden" name="id" value={review.id} /><button className="rounded-lg bg-ink px-3 py-2 text-sm text-white">使用例に変換</button></form>
-              <form action={updateReviewStatus} className="flex gap-2"><input type="hidden" name="id" value={review.id} /><input type="hidden" name="status" value="rejected" /><button className="rounded-lg border border-line px-3 py-2 text-sm">却下</button></form>
+              <form action={convertReviewToUseCase}><input type="hidden" name="id" value={review.id} /><button type="submit" className="rounded-lg bg-ink px-3 py-2 text-sm text-white">使用例に変換</button></form>
+              <form action={updateReviewStatus} className="flex gap-2"><input type="hidden" name="id" value={review.id} /><input type="hidden" name="status" value="rejected" /><button type="submit" className="rounded-lg border border-line px-3 py-2 text-sm">却下</button></form>
             </div>
           </Card>
         ))}
