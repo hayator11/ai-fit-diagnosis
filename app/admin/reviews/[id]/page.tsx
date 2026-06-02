@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { Card } from "@/components/ui/Card";
-import { Button } from "@/components/ui/Button";
 import { convertReviewToUseCase, updateReviewStatus } from "@/lib/actions/reviews";
 import { getReviews } from "@/lib/data/queries";
+import { ReviewDetailClient } from "./ReviewDetailClient";
 
 export default async function AdminReviewDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -22,17 +22,7 @@ export default async function AdminReviewDetailPage({ params }: { params: Promis
         </dl>
         <p className="mt-6 whitespace-pre-wrap text-muted">{review.actual_use_case}</p>
       </Card>
-      <Card className="mt-6">
-        <form action={updateReviewStatus} className="space-y-3">
-          <input type="hidden" name="id" value={review.id} />
-          <select name="status" defaultValue={review.status} className="w-full rounded-lg border border-line p-3">
-            {["pending", "reviewed", "approved", "rejected", "converted_to_use_case"].map((item) => <option key={item}>{item}</option>)}
-          </select>
-          <textarea name="admin_note" defaultValue={review.admin_note ?? ""} rows={4} className="w-full rounded-lg border border-line p-3" placeholder="管理メモ" />
-          <Button type="submit">ステータスを保存</Button>
-        </form>
-        <form action={convertReviewToUseCase} className="mt-3"><input type="hidden" name="id" value={review.id} /><Button type="submit" variant="secondary">使用例に変換</Button></form>
-      </Card>
+      <ReviewDetailClient review={review} updateReviewStatus={updateReviewStatus} convertReviewToUseCase={convertReviewToUseCase} />
     </div>
   );
 }
