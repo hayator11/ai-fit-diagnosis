@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 
@@ -8,11 +8,12 @@ export function ReviewDetailClient({ review, updateReviewStatus, convertReviewTo
   updateReviewStatus: (formData: FormData) => Promise<void>;
   convertReviewToUseCase: (formData: FormData) => Promise<void>;
 }) {
-  const [converting, setConverting] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  async function handleConvert(formData: FormData) {
-    setConverting(true);
-    await convertReviewToUseCase(formData);
+  function handleConvert() {
+    const formData = new FormData();
+    formData.append("id", review.id);
+    startTransition(() => convertReviewToUseCase(formData));
   }
 
   return (
@@ -25,12 +26,11 @@ export function ReviewDetailClient({ review, updateReviewStatus, convertReviewTo
         <textarea name="admin_note" defaultValue={review.admin_note ?? ""} rows={4} className="w-full rounded-lg border border-line p-3" placeholder="管理メモ" />
         <Button type="submit">ステータスを保存</Button>
       </form>
-      <form action={handleConvert} className="mt-3">
-        <input type="hidden" name="id" value={review.id} />
-        <Button type="submit" variant="secondary" disabled={converting}>
-          {converting ? "変換中..." : "使用例に変換"}
+      <div className="mt-3">
+        <Button variant="secondary" disabled={isPending} onClick={handleConvert}>
+          {isPending ? "変換中..." : "使用例に変換"}
         </Button>
-      </form>
+      </div>
     </Card>
   );
 }
