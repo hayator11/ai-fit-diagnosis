@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/Card";
 import { ToolCard } from "@/components/tools/ToolCard";
 import { UseCaseCard } from "@/components/use-cases/UseCaseCard";
 import { getPublishedTools, getPublishedUpdates, getPublishedUseCases } from "@/lib/data/queries";
-import { PROJECT_NAME, PROJECT_TAGLINE } from "@/lib/project";
+import { PROJECT_NAME } from "@/lib/project";
 import { experienceLevels } from "@/src/data/ai-tamatebako/experienceLevels";
 
 export default async function HomePage() {
@@ -14,8 +14,13 @@ export default async function HomePage() {
       <section className="bg-white">
         <div className="mx-auto max-w-6xl px-4 py-16 md:py-24">
           <p className="text-sm font-semibold text-brand">{PROJECT_NAME}</p>
-          <h1 className="mt-4 max-w-5xl text-4xl font-bold tracking-tight md:text-6xl">
-            <span className="block">{PROJECT_TAGLINE}</span>
+          <div className="mt-4 space-y-2 leading-relaxed">
+            <p className="text-xl font-bold tracking-tight text-ink md:text-2xl">孤独な挑戦者を、減らしたい。</p>
+            <p className="text-lg font-semibold text-muted">だから、あなたに合うAIを見つける。</p>
+            <p className="text-lg font-semibold text-muted">道具がわかれば、一歩が軽くなる。</p>
+          </div>
+          <h1 className="mt-7 max-w-6xl text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-[56px]">
+            <span className="block">ひらけば、自分の可能性が<span className="inline-block">見えてくる。</span></span>
           </h1>
           <p className="mt-6 max-w-4xl text-lg leading-8 text-muted">
             ChatGPT、Claude、Gemini、NotebookLM、Genspark、Claude Code、Codex、音楽生成AI、動画生成AI。
