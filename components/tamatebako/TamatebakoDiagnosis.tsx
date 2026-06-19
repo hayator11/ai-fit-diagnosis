@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils/cn";
 type AnswersByQuestion = Record<string, string[]>;
 
 export function TamatebakoDiagnosis() {
+  const lineUrl = process.env.NEXT_PUBLIC_LINE_URL;
   const [selectedLevel, setSelectedLevel] = useState<ExperienceLevelId | null>(null);
   const [started, setStarted] = useState(false);
   const [step, setStep] = useState(0);
@@ -109,12 +110,12 @@ export function TamatebakoDiagnosis() {
           </div>
           <div className="grid border-t border-amber-100 bg-white/70 md:grid-cols-3">
             <div className="border-b border-amber-100 p-5 md:border-b-0 md:border-r">
-              <p className="text-sm text-muted">メインAI</p>
+              <p className="text-sm text-muted">あなたの最初の相棒</p>
               <p className="mt-2 text-2xl font-bold">{mainAi?.name ?? result.mainAiId}</p>
               <p className="mt-2 text-sm text-muted">{mainAi?.description}</p>
             </div>
             <div className="border-b border-amber-100 p-5 md:border-b-0 md:border-r">
-              <p className="text-sm text-muted">相性の良いAI</p>
+              <p className="text-sm text-muted">次に組み合わせる道具</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {relatedAis.map((tool) => (
                   <span key={tool?.id} className="rounded-full border border-line bg-white px-3 py-1 text-sm font-semibold">
@@ -136,6 +137,38 @@ export function TamatebakoDiagnosis() {
           </div>
         </Card>
 
+        {mainAi?.canDo || mainAi?.recommendedUse || mainAi?.nextStep ? (
+          <div className="grid gap-4 md:grid-cols-3">
+            {mainAi.canDo ? (
+              <Card>
+                <h3 className="text-lg font-bold">このAIでできること</h3>
+                <p className="mt-3 leading-7 text-muted">{mainAi.canDo}</p>
+              </Card>
+            ) : null}
+            {mainAi.recommendedUse ? (
+              <Card>
+                <h3 className="text-lg font-bold">おすすめの使い方</h3>
+                <p className="mt-3 leading-7 text-muted">{mainAi.recommendedUse}</p>
+              </Card>
+            ) : null}
+            {mainAi.nextStep ? (
+              <Card>
+                <h3 className="text-lg font-bold">次に組み合わせると良いAI</h3>
+                <p className="mt-3 leading-7 text-muted">{mainAi.nextStep}</p>
+                {relatedAis.length > 0 ? (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {relatedAis.map((tool) => (
+                      <span key={tool?.id} className="rounded-full border border-line bg-white px-3 py-1 text-sm font-semibold">
+                        {tool?.name}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+              </Card>
+            ) : null}
+          </div>
+        ) : null}
+
         <div className="grid gap-4 md:grid-cols-2">
           <Card>
             <h3 className="text-lg font-bold">最初にやること</h3>
@@ -144,7 +177,7 @@ export function TamatebakoDiagnosis() {
           {level.resultTone.showPromptExamples && result.promptExample ? (
             <Card>
               <h3 className="text-lg font-bold">おすすめプロンプト</h3>
-              <p className="mt-3 rounded-lg bg-slate-50 p-4 text-sm leading-7 text-muted">{result.promptExample}</p>
+              <p className="mt-3 whitespace-pre-wrap rounded-lg bg-slate-50 p-4 text-sm leading-7 text-muted">{result.promptExample}</p>
             </Card>
           ) : null}
         </div>
@@ -162,6 +195,57 @@ export function TamatebakoDiagnosis() {
             </ol>
           </Card>
         ) : null}
+
+        <Card>
+          <h3 className="text-lg font-bold">AIの成果は、どのAIを使うかだけでは決まりません。</h3>
+          <div className="mt-3 space-y-4 leading-7 text-muted">
+            <p>
+              同じChatGPTでも、同じClaudeでも、同じCodexでも、
+              <br />
+              最初の頼み方で、出てくる答えは大きく変わります。
+            </p>
+            <p>「いい感じにして」だけでは、AIはそれっぽい平均点を出すしかありません。</p>
+            <p>
+              もっと深く知りたい方は、AIの選び方だけでなく、
+              <br />
+              頼み方・前提整理・改善の仕方まで診断できます。
+            </p>
+          </div>
+          <a
+            href="/diagnosis/deep"
+            className="mt-5 inline-flex min-h-11 items-center justify-center rounded-lg bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+          >
+            AIへの頼み方まで診断する
+          </a>
+        </Card>
+
+        <Card className="border-emerald-100 bg-emerald-50/60">
+          <h3 className="text-lg font-bold">AI活用の一歩を、LINEでも受け取る。</h3>
+          <div className="mt-3 space-y-4 leading-7 text-muted">
+            <p>診断結果を見て終わりではなく、実際に使えるプロンプトや、新しいAIの情報、みんなの使用例をLINEで受け取れます。</p>
+            <p>
+              AIは、道具です。
+              <br />
+              でも、道具は使い方がわかると一気に力になります。
+            </p>
+            <p>あなたに合うAIの使い方を、少しずつ一緒に育てていきましょう。</p>
+          </div>
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            {lineUrl ? (
+              <a
+                href={lineUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex min-h-11 items-center justify-center rounded-lg bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-800"
+              >
+                LINEで受け取る
+              </a>
+            ) : (
+              <Button disabled>LINEで受け取る</Button>
+            )}
+            <p className="text-sm font-semibold text-muted">孤独な挑戦者を、減らしたい。</p>
+          </div>
+        </Card>
 
         <div className="flex flex-wrap gap-3">
           <Button onClick={shareResult} variant="secondary">

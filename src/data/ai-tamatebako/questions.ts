@@ -9,6 +9,7 @@ export type QuestionOption = {
     video?: number;
     voice?: number;
     productivity?: number;
+    development?: number;
     creative?: number;
     community?: number;
     monetization?: number;
@@ -37,6 +38,8 @@ export const questions: Question[] = [
       { id: "q1_design", label: "画像やデザインをつくりたい", scores: { design: 4, creative: 1 }, preferenceTags: ["画像", "デザイン", "資料作成"] },
       { id: "q1_video", label: "動画をつくりたい", scores: { video: 4, creative: 1 }, preferenceTags: ["動画", "ショート動画", "映像表現"] },
       { id: "q1_voice", label: "音声やナレーションをつくりたい", scores: { voice: 4, creative: 1 }, preferenceTags: ["音声", "ナレーション", "音声配信"] },
+      { id: "q1_programming", label: "プログラムやアプリをつくりたい", scores: { development: 5, productivity: 1, creative: 1 }, preferenceTags: ["プログラム", "アプリ", "Web制作", "実装"] },
+      { id: "q1_productivity", label: "仕事や活動を効率化したい", scores: { productivity: 4, research: 1 }, preferenceTags: ["仕事", "活動", "効率化", "業務改善"] },
       { id: "q1_unknown", label: "まだよくわからない", scores: { beginner: 4, writing: 1, productivity: 1 }, preferenceTags: ["初心者", "AIの始め方"] }
     ]
   },
@@ -118,6 +121,64 @@ export const questions: Question[] = [
       { id: "q7_movie", label: "動画で届ける人", scores: { video: 4 }, preferenceTags: ["動画"] },
       { id: "q7_voice", label: "声や音で届ける人", scores: { voice: 4 }, preferenceTags: ["音声"] },
       { id: "q7_searching", label: "まだ自分の型を探している人", scores: { beginner: 3, creative: 1 }, preferenceTags: ["可能性探索", "初心者"] }
+    ]
+  },
+  {
+    id: "q8_priority",
+    title: "重視したいことは？",
+    type: "single",
+    options: [
+      { id: "q8_speed", label: "速さ", scores: { productivity: 3, beginner: 1 }, preferenceTags: ["速さ", "時短"] },
+      { id: "q8_easy_to_understand", label: "わかりやすさ", scores: { beginner: 3, writing: 1 }, preferenceTags: ["わかりやすさ", "初心者"] },
+      { id: "q8_accuracy", label: "正確さ", scores: { research: 3, productivity: 1 }, preferenceTags: ["正確さ", "調査"] },
+      { id: "q8_expression", label: "表現力", scores: { writing: 2, creative: 2 }, preferenceTags: ["表現力", "文章", "創作"] },
+      { id: "q8_implementation", label: "実装力", scores: { development: 4, productivity: 1 }, preferenceTags: ["実装力", "開発"] },
+      { id: "q8_design", label: "デザイン性", scores: { design: 4, creative: 1 }, preferenceTags: ["デザイン性", "見た目"] },
+      { id: "q8_team_sharing", label: "チーム共有", scores: { community: 3, productivity: 1 }, preferenceTags: ["チーム共有", "コミュニティ"] },
+      { id: "q8_operation", label: "継続運用", scores: { productivity: 3, community: 1 }, preferenceTags: ["継続運用", "仕組み化"] }
+    ]
+  },
+  {
+    id: "q9_prompt_style",
+    title: "AIへの頼み方はどれに近いですか？",
+    type: "single",
+    options: [
+      { id: "q9_good_feeling", label: "「いい感じにして」と頼むことが多い", scores: { beginner: 3 }, preferenceTags: ["頼み方", "初心者"] },
+      { id: "q9_use_only", label: "用途だけ伝えることが多い", scores: { beginner: 2, productivity: 1 }, preferenceTags: ["用途", "頼み方"] },
+      { id: "q9_reader_purpose", label: "読者や目的も少し伝える", scores: { writing: 2, productivity: 1 }, preferenceTags: ["読者", "目的"] },
+      { id: "q9_conditions_ng", label: "条件やNG表現も伝える", scores: { writing: 2, creative: 1, productivity: 1 }, preferenceTags: ["条件", "NG表現"] },
+      { id: "q9_ask_improvement", label: "出力後に改善点まで聞く", scores: { productivity: 2, creative: 2 }, preferenceTags: ["改善", "磨き込み"] },
+      { id: "q9_iterate", label: "何度も壁打ちしながら磨く", scores: { creative: 3, community: 1 }, preferenceTags: ["壁打ち", "改善"] }
+    ]
+  },
+  {
+    id: "q10_goal_state",
+    title: "最終的に目指したい状態は？",
+    type: "single",
+    options: [
+      { id: "q10_use_conveniently", label: "AIを便利に使いたい", scores: { beginner: 3, productivity: 1 }, preferenceTags: ["便利", "初心者"] },
+      { id: "q10_writing_stronger", label: "AIで文章や発信を強くしたい", scores: { writing: 4 }, preferenceTags: ["文章", "発信"] },
+      { id: "q10_build_service", label: "AIでサイトやサービスを作りたい", scores: { development: 4, productivity: 1 }, preferenceTags: ["サイト制作", "サービス制作"] },
+      { id: "q10_research_easy", label: "AIで資料整理や調査を楽にしたい", scores: { research: 4, productivity: 1 }, preferenceTags: ["資料整理", "調査"] },
+      { id: "q10_systemize_work", label: "AIで仕事を仕組み化したい", scores: { productivity: 4, community: 1 }, preferenceTags: ["仕組み化", "仕事"] },
+      { id: "q10_expand_creative", label: "AIでクリエイティブを広げたい", scores: { creative: 4 }, preferenceTags: ["クリエイティブ", "創作"] },
+      { id: "q10_move_project", label: "AIを使って仲間とプロジェクトを動かしたい", scores: { community: 4, productivity: 1 }, preferenceTags: ["仲間", "プロジェクト"] },
+      { id: "q10_use_multiple_ai", label: "AIを使い分けられる人になりたい", scores: { creative: 2, productivity: 2, research: 1 }, preferenceTags: ["AI使い分け", "実践"] }
+    ]
+  },
+  {
+    id: "q11_current_self",
+    title: "今の自分に一番近い言葉は？",
+    type: "single",
+    options: [
+      { id: "q11_anxious", label: "まだAIに少し不安がある", scores: { beginner: 4 }, preferenceTags: ["不安", "初心者"] },
+      { id: "q11_lost_start", label: "興味はあるが、何から始めるか迷っている", scores: { beginner: 3, research: 1 }, preferenceTags: ["始め方", "迷い"] },
+      { id: "q11_not_mastered", label: "便利だとは思うが、使いこなせていない", scores: { productivity: 2, beginner: 2 }, preferenceTags: ["使いこなし", "効率化"] },
+      { id: "q11_apply_work", label: "もっと仕事や活動に活かしたい", scores: { productivity: 4 }, preferenceTags: ["仕事", "活動"] },
+      { id: "q11_use_multiple", label: "複数AIを使い分けたい", scores: { research: 2, productivity: 2 }, preferenceTags: ["複数AI", "使い分け"] },
+      { id: "q11_move_challenge", label: "AIで自分の挑戦を前に進めたい", scores: { creative: 2, productivity: 2 }, preferenceTags: ["挑戦", "前進"] },
+      { id: "q11_support_team", label: "AIで仲間やプロジェクトを支えたい", scores: { community: 4 }, preferenceTags: ["仲間", "プロジェクト"] },
+      { id: "q11_create_culture", label: "AIを使って新しい文化をつくりたい", scores: { creative: 3, community: 2 }, preferenceTags: ["文化", "コミュニティ"] }
     ]
   }
 ];

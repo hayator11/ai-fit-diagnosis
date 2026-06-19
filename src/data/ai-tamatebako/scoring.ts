@@ -8,6 +8,7 @@ export type ScoreMap = {
   video: number;
   voice: number;
   productivity: number;
+  development: number;
   creative: number;
   community: number;
   monetization: number;
@@ -26,6 +27,7 @@ export const initialScores: ScoreMap = {
   video: 0,
   voice: 0,
   productivity: 0,
+  development: 0,
   creative: 0,
   community: 0,
   monetization: 0,
@@ -54,7 +56,7 @@ export function calculateScores(answers: UserAnswer[]): ScoreMap {
 }
 
 export function getTopScoreKey(scores: ScoreMap): keyof ScoreMap {
-  const priority: (keyof ScoreMap)[] = ["beginner", "writing", "productivity", "research", "design", "video", "voice", "creative", "community", "monetization"];
+  const priority: (keyof ScoreMap)[] = ["beginner", "development", "writing", "productivity", "research", "design", "video", "voice", "creative", "community", "monetization"];
   let topKey: keyof ScoreMap = "beginner";
   let topValue = -1;
 
