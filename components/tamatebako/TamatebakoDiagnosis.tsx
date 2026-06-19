@@ -110,12 +110,12 @@ export function TamatebakoDiagnosis() {
           </div>
           <div className="grid border-t border-amber-100 bg-white/70 md:grid-cols-3">
             <div className="border-b border-amber-100 p-5 md:border-b-0 md:border-r">
-              <p className="text-sm text-muted">メインAI</p>
+              <p className="text-sm text-muted">あなたの最初の相棒</p>
               <p className="mt-2 text-2xl font-bold">{mainAi?.name ?? result.mainAiId}</p>
               <p className="mt-2 text-sm text-muted">{mainAi?.description}</p>
             </div>
             <div className="border-b border-amber-100 p-5 md:border-b-0 md:border-r">
-              <p className="text-sm text-muted">相性の良いAI</p>
+              <p className="text-sm text-muted">次に組み合わせる道具</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {relatedAis.map((tool) => (
                   <span key={tool?.id} className="rounded-full border border-line bg-white px-3 py-1 text-sm font-semibold">
@@ -136,6 +136,38 @@ export function TamatebakoDiagnosis() {
             </div>
           </div>
         </Card>
+
+        {mainAi?.canDo || mainAi?.recommendedUse || mainAi?.nextStep ? (
+          <div className="grid gap-4 md:grid-cols-3">
+            {mainAi.canDo ? (
+              <Card>
+                <h3 className="text-lg font-bold">このAIでできること</h3>
+                <p className="mt-3 leading-7 text-muted">{mainAi.canDo}</p>
+              </Card>
+            ) : null}
+            {mainAi.recommendedUse ? (
+              <Card>
+                <h3 className="text-lg font-bold">おすすめの使い方</h3>
+                <p className="mt-3 leading-7 text-muted">{mainAi.recommendedUse}</p>
+              </Card>
+            ) : null}
+            {mainAi.nextStep ? (
+              <Card>
+                <h3 className="text-lg font-bold">次に組み合わせると良いAI</h3>
+                <p className="mt-3 leading-7 text-muted">{mainAi.nextStep}</p>
+                {relatedAis.length > 0 ? (
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {relatedAis.map((tool) => (
+                      <span key={tool?.id} className="rounded-full border border-line bg-white px-3 py-1 text-sm font-semibold">
+                        {tool?.name}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+              </Card>
+            ) : null}
+          </div>
+        ) : null}
 
         <div className="grid gap-4 md:grid-cols-2">
           <Card>
