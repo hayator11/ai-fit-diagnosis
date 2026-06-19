@@ -10,6 +10,12 @@ function formValues(formData: FormData, key: string) {
   return formData.getAll(key).map(String).filter(Boolean);
 }
 
+function canManageReviews(formData: FormData) {
+  const password = process.env.ADMIN_REVIEW_PASSWORD || process.env.ADMIN_PASSWORD;
+  if (!password) return true;
+  return String(formData.get("admin_password") ?? "") === password;
+}
+
 export async function submitReview(formData: FormData) {
   const payload = {
     project_key: PROJECT_KEY,
@@ -27,7 +33,14 @@ export async function submitReview(formData: FormData) {
     status: "pending"
   };
 
-  if (!payload.tools_used.length || !payload.use_purpose || !payload.rating || !payload.publish_permission) {
+  if (
+    !payload.tools_used.length ||
+    !payload.use_purpose ||
+    !payload.rating ||
+    !payload.want_to_use_again ||
+    !payload.actual_use_case ||
+    !payload.publish_permission
+  ) {
     redirect("/review?error=入力内容を確認してください");
   }
 
@@ -44,6 +57,8 @@ export async function submitReview(formData: FormData) {
 }
 
 export async function updateReviewStatus(formData: FormData) {
+  if (!canManageReviews(formData)) return;
+
   const id = String(formData.get("id") ?? "");
   const status = String(formData.get("status") ?? "pending");
   const admin_note = String(formData.get("admin_note") ?? "");
@@ -57,6 +72,8 @@ export async function updateReviewStatus(formData: FormData) {
 }
 
 export async function convertReviewToUseCase(formData: FormData) {
+  if (!canManageReviews(formData)) return;
+
   const id = String(formData.get("id") ?? "");
   const supabase = getSupabaseAdmin();
   if (!supabase || !id) return;
