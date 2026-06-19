@@ -34,6 +34,14 @@ function ReviewAdminPasswordCard({ password }: { password: string }) {
   );
 }
 
+function ReviewAdminUnavailableCard() {
+  return (
+    <Card className="mt-6 border-amber-200 bg-amber-50 text-amber-900">
+      管理画面は現在利用できません。ADMIN_REVIEW_PASSWORD を設定してください。
+    </Card>
+  );
+}
+
 function ValueList({ values }: { values?: string[] | null }) {
   if (!values?.length) return <span className="text-muted">未選択</span>;
   return <span>{values.join("、")}</span>;
@@ -49,16 +57,17 @@ export default async function AdminReviewDetailPage({
   const { id } = await params;
   const query = await searchParams;
   const password = query.password ?? "";
-  const adminPassword = process.env.ADMIN_REVIEW_PASSWORD || process.env.ADMIN_PASSWORD;
-  const isAuthorized = !adminPassword || password === adminPassword;
-  const review = (await getReviews()).find((item) => item.id === id);
-  if (!review) notFound();
+  const adminPassword = process.env.ADMIN_REVIEW_PASSWORD;
+  const isAuthorized = Boolean(adminPassword) && password === adminPassword;
+  const review = isAuthorized ? (await getReviews()).find((item) => item.id === id) : null;
+  if (isAuthorized && !review) notFound();
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <h1 className="text-3xl font-bold">レビュー詳細</h1>
       <div className="mt-6"><AdminNav /></div>
-      {!isAuthorized && <ReviewAdminPasswordCard password={password} />}
-      {isAuthorized && (
+      {!adminPassword && <ReviewAdminUnavailableCard />}
+      {adminPassword && !isAuthorized && <ReviewAdminPasswordCard password={password} />}
+      {adminPassword && isAuthorized && review && (
       <>
       <div className="mt-6">
         <Link href={`/admin/reviews${password ? `?password=${encodeURIComponent(password)}` : ""}`} className="text-sm font-semibold text-muted hover:text-ink">レビュー一覧に戻る</Link>

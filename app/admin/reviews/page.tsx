@@ -35,18 +35,27 @@ function ReviewAdminPasswordCard({ password }: { password: string }) {
   );
 }
 
+function ReviewAdminUnavailableCard() {
+  return (
+    <Card className="mt-6 border-amber-200 bg-amber-50 text-amber-900">
+      管理画面は現在利用できません。ADMIN_REVIEW_PASSWORD を設定してください。
+    </Card>
+  );
+}
+
 export default async function AdminReviewsPage({ searchParams }: { searchParams: Promise<{ password?: string }> }) {
   const params = await searchParams;
   const password = params.password ?? "";
-  const adminPassword = process.env.ADMIN_REVIEW_PASSWORD || process.env.ADMIN_PASSWORD;
-  const isAuthorized = !adminPassword || password === adminPassword;
-  const reviews = await getReviews();
+  const adminPassword = process.env.ADMIN_REVIEW_PASSWORD;
+  const isAuthorized = Boolean(adminPassword) && password === adminPassword;
+  const reviews = isAuthorized ? await getReviews() : [];
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="text-3xl font-bold">使用感投稿管理</h1>
       <div className="mt-6"><AdminNav /></div>
-      {!isAuthorized && <ReviewAdminPasswordCard password={password} />}
-      {isAuthorized && (
+      {!adminPassword && <ReviewAdminUnavailableCard />}
+      {adminPassword && !isAuthorized && <ReviewAdminPasswordCard password={password} />}
+      {adminPassword && isAuthorized && (
       <div className="space-y-4">
         {reviews.length === 0 && <Card>Supabase接続後、投稿がここに表示されます。</Card>}
         {reviews.map((review) => (
