@@ -99,15 +99,17 @@ export const questions: Question[] = [
   },
   {
     id: "q6_result_need",
-    title: "結果で知りたいことは？",
-    type: "multiple",
+    title: "AIを使うとき、あなたが一番つまずきやすいのはどこですか？",
+    type: "single",
     options: [
-      { id: "q6_first_ai", label: "まず使うべきAI", scores: { beginner: 3 }, preferenceTags: ["最初のAI"] },
-      { id: "q6_combination", label: "組み合わせると強いAI", scores: { productivity: 2, creative: 1 }, preferenceTags: ["AI組み合わせ"] },
-      { id: "q6_free", label: "無料で試せるAI", scores: { beginner: 2 }, preferenceTags: ["無料"] },
-      { id: "q6_work", label: "仕事に使えるAI", scores: { productivity: 3 }, preferenceTags: ["仕事"] },
-      { id: "q6_sns", label: "発信に使えるAI", scores: { writing: 2, design: 2 }, preferenceTags: ["SNS投稿", "発信"] },
-      { id: "q6_monetize", label: "収益化に使えるAI", scores: { monetization: 3, creative: 1 }, preferenceTags: ["収益化", "アフィリエイト"] }
+      { id: "q6_dont_know_ask", label: "何を聞けばいいかわからない", scores: { beginner: 3, writing: 2 }, preferenceTags: ["聞き方", "初心者", "相談"] },
+      { id: "q6_cant_prompt", label: "うまく指示を書けない", scores: { writing: 3, productivity: 1 }, preferenceTags: ["指示づくり", "プロンプト", "言語化"] },
+      { id: "q6_cant_improve_answer", label: "返ってきた答えをどう直せばいいかわからない", scores: { research: 2, writing: 2, productivity: 1 }, preferenceTags: ["改善", "整理", "深掘り"] },
+      { id: "q6_stuck_shaping", label: "アイデアは出るけど、形にするところで止まる", scores: { creative: 3, research: 1, productivity: 1 }, preferenceTags: ["アイデア", "形にする", "構成"] },
+      { id: "q6_not_workflow", label: "文章や画像は作れるけど、仕事の流れに組み込めない", scores: { productivity: 4, design: 1 }, preferenceTags: ["業務活用", "仕組み化", "見える化"] },
+      { id: "q6_too_many_tools", label: "ツールが多すぎて、どれを使えばいいかわからない", scores: { beginner: 2, research: 2, productivity: 1 }, preferenceTags: ["ツール選び", "AI使い分け", "比較"] },
+      { id: "q6_cant_build_publish", label: "作りたいものはあるけど、実装や公開の方法がわからない", scores: { development: 5, productivity: 1 }, preferenceTags: ["実装", "公開", "Web制作", "アプリ"] },
+      { id: "q6_more_efficient", label: "特につまずきはない。もっと効率よく使いたい", scores: { productivity: 3, research: 1, creative: 1 }, preferenceTags: ["効率化", "組み合わせ", "上級活用"] }
     ]
   },
   {
